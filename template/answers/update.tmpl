@@ -1,0 +1,33 @@
+{{define "title"}}Edit Answer{{end}}
+{{define "head"}}{{end}}
+{{define "content"}}
+
+<div class="container">
+	<div class="page-header">
+		<h1>{{template "title" .}}</h1>
+	</div>
+	
+	<form id="form" method="post">
+		<div class="form-group">
+			<label for="question">Question</label>
+			<div><textarea rows="5" class="form-control" id="answer_content" name="answer_content" placeholder="Type your answer here..." />{{.answer_content}}</textarea>
+			<br>			
+			<div><input type="checkbox" class="form-control" name="answer_correct" {{.answer_correct}}>This answer is correct?<br></div>			
+			</div>
+		</div>
+		
+		<a title="Save" class="btn btn-success" role="submit" onclick="document.getElementById('form').submit();">
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save
+		</a>
+		<a title="Back to Question Header" class="btn btn-danger" role="button" href="{{$.BaseURI}}answers/read/{{.id}}">
+			<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Back
+		</a>
+		
+		<input type="hidden" name="token" value="{{.token}}">
+	</form>
+	
+	{{template "footer" .}}
+</div>
+
+{{end}}
+{{define "foot"}}{{end}}

@@ -85,6 +85,46 @@ func routes() *httprouter.Router {
 		New().
 		ThenFunc(controller.AboutGET)))
 
+	// Question
+	r.GET("/questionslist", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.QuestionsListReadGET)))
+	r.GET("/questionslist/createHeader", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.QuestionsListCreateGET)))
+	r.POST("/questionslist/createHeader", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.QuestionsListCreatePOST)))
+	r.GET("/questionslist/update/:id", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.QuestionsListUpdateGET)))
+	r.POST("/questionslist/update/:id", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.QuestionsListUpdatePOST)))
+	r.GET("/questionslist/delete/:id", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.QuestionsListDeleteGET)))
+
+	// Answer
+	r.GET("/answers/list/:id", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.AnswersReadGET)))
+	r.GET("/answers/create/new/:id", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.AnswersCreateGET)))
+	r.POST("/answers/create/new/:id", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.AnswersCreatePOST)))
+	r.GET("/answers/update/:q_id/:a_id", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.AnswersUpdateGET)))
+	r.POST("/answers/update/:q_id/:a_id", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.AnswersUpdatePOST)))
+	r.GET("/answers/delete/:q_id/:a_id", hr.Handler(alice.
+		New(acl.DisallowAnon).
+		ThenFunc(controller.AnswersDeleteGET)))
+
 	// Notepad
 	r.GET("/notepad", hr.Handler(alice.
 		New(acl.DisallowAnon).

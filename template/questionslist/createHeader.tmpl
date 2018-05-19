@@ -1,0 +1,30 @@
+{{define "title"}}Add a Question{{end}}
+{{define "head"}}{{end}}
+{{define "content"}}
+
+<div class="container">
+	<div class="page-header">
+		<h1>{{template "title" .}}</h1>
+	</div>
+	
+	<form id="form" method="post">
+		<div class="form-group">
+			<label for="question_answer">Question Header</label>
+			<div><textarea rows="5" class="form-control" id="question_header" name="question_header" placeholder="Type your question header here..." value="" /></textarea></div>
+		</div>
+		
+		<a title="Save" class="btn btn-success" role="submit" onclick="document.getElementById('form').submit();">
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save
+		</a>
+		<a title="Back to Questions List" class="btn btn-danger" role="button" href="{{$.BaseURI}}questionslist">
+			<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Back
+		</a>
+		
+		<input type="hidden" name="token" value="{{.token}}">
+	</form>
+	
+	{{template "footer" .}}
+</div>
+
+{{end}}
+{{define "foot"}}{{end}}

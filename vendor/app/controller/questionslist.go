@@ -62,11 +62,13 @@ func QuestionsListCreatePOST(w http.ResponseWriter, r *http.Request) {
 
 	// Get form values
 	content := r.FormValue("question_header")
+	correctmsg := r.FormValue("question_correctmsg")
+	wrongmsg := r.FormValue("question_wrongmsg")
 
 	userID := fmt.Sprintf("%s", sess.Values["id"])
 
 	// Get database result
-	err := model.QuestionCreate(content, userID)
+	err := model.QuestionCreate(content, correctmsg, wrongmsg, userID)
 	// Will only error if there is a problem with the query
 	if err != nil {
 		log.Println(err)
@@ -110,6 +112,8 @@ func QuestionsListUpdateGET(w http.ResponseWriter, r *http.Request) {
 	v.Name = "questionslist/update"
 	v.Vars["token"] = csrfbanana.Token(w, r, sess)
 	v.Vars["question_content"] = question.Content
+	v.Vars["question_correctmsg"] = question.CorrectMsg
+	v.Vars["question_wrongmsg"] = question.WrongMsg
 	v.Render(w)
 }
 
@@ -127,7 +131,9 @@ func QuestionsListUpdatePOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get form values
-	content := r.FormValue("question")
+	content := r.FormValue("question_content")
+	correctmsg := r.FormValue("question_correctmsg")
+	wrongmsg := r.FormValue("question_wrongmsg")
 
 	userID := fmt.Sprintf("%s", sess.Values["id"])
 
@@ -136,7 +142,7 @@ func QuestionsListUpdatePOST(w http.ResponseWriter, r *http.Request) {
 	questionID := params.ByName("id")
 
 	// Get database result
-	err := model.QuestionUpdate(content, userID, questionID)
+	err := model.QuestionUpdate(content, correctmsg, wrongmsg, userID, questionID)
 	// Will only error if there is a problem with the query
 	if err != nil {
 		log.Println(err)

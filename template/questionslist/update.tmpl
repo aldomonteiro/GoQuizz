@@ -9,10 +9,17 @@
 	
 	<form id="form" method="post">
 		<div class="form-group">
-			<label for="question">Question</label>
-			<div><textarea rows="5" class="form-control" id="note" name="note" placeholder="Type your question here..." />{{.question_content}}</textarea></div>
+			<label for="question">Question Header</label>
+			<div><textarea rows="5" class="form-control" name="question_content" placeholder="Type your question here..." />{{.question_content}}</textarea></div>
 		</div>
-		
+		<div class="form-group">
+			<label for="question_correctmsg">Message for correctness</label>
+			<div><textarea rows="5" class="form-control" name="question_correctmsg" placeholder="Type the message to show when the user answer correctly..." />{{.question_correctmsg}}</textarea></div>
+		</div>		
+		<div class="form-group">
+			<label for="question_wrongmsg">Message for incorrecteness</label>
+			<div><textarea rows="5" class="form-control" name="question_wrongmsg" placeholder="Type the message to show when the user answer incorrectly..." />{{.question_wrongmsg}}</textarea></div>
+		</div>		
 		<a title="Save" class="btn btn-success" role="submit" onclick="document.getElementById('form').submit();">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save
 		</a>

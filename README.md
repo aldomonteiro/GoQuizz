@@ -4,11 +4,21 @@
 
 Basic MVC Web Application in Go
 
+This project is an online quizz, where it is possible to create questions and assigning answers to them, marking the answers as correct or not.
+
+## Current state 
+
+Only the system backend is developed, i.e., it is only possible to create questions and answers. The quizz, where users can answer the questions and get a score was not developed. I want to go further and develop/integrate the quizz, something like the angularjs-Quizzler project [https://github.com/ThomasBurleson/angularjs-Quizzler]
+
+## GoWebApp
+
 I found a really simple MVC application written in Go, the GoWebApp [https://github.com/josephspurrier/gowebapp], forked and extended it to do a bit more.
 
 This project demonstrates how to structure and build a website using the Go language without a framework. There is a blog article you can read at [http://www.josephspurrier.com/go-web-app-example/](http://www.josephspurrier.com/go-web-app-example/).
 
-To download, run the following command:
+## Get started
+
+Getting started with GoQuizz is quite straight. Download it and run the following command:
 
 ~~~
 go get github.com/aldomonteiro/goquizz
@@ -16,7 +26,7 @@ go get github.com/aldomonteiro/goquizz
 
 ## Quick Start with Bolt
 
-The forked project GoWebApp was written to work with Bolt, MongoDB or MySQL. When I started to extend the GoWebApp to create a system that creates questions and answers to be used in a simple quizz, I kept these 3 database options alive. However, maintain this compatibility started to become harder. My intent was learn Go, so, I chose the simpler database option: Bolt.
+The forked project GoWebApp was written to work with Bolt, MongoDB or MySQL. When I started to write the GoQuizz, I kept these 3 database options alive. However, maintain this compatibility started to become hard. My intent was learn Go, so, I chose the simpler database option: Bolt.
 
 The goquizz.db file will be created once you start the application.
 
@@ -29,7 +39,7 @@ Navigate to the login page, and then to the register page. Create a new user and
 The web app has a public home page, authenticated home page, login page, register page,
 about page, and a simple notepad to demonstrate the CRUD operations.
 
-The entrypoint for the web app is gowebapp.go. The file loads the application settings, 
+The entrypoint for the web app is goquizz.go. The file loads the application settings, 
 starts the session, connects to the database, sets up the templates, loads 
 the routes, attaches the middleware, and starts the web server.
 
@@ -43,32 +53,32 @@ by JavaScript in the static folder.
 
 ## Structure
 
-The project structure is basically the same as its forked project GoWebApp [https://github.com/josephspurrier/gowebapp]. Visit the project page and read carefully the README to understand the structure, components, templates and model. 
+The project structure is basically the same as the GoWebApp project [https://github.com/josephspurrier/gowebapp]. Visit the project page and read carefully the README to understand the structure, components, templates and model. 
 
-## Database
+## Quizz model
 
-This project is focused in the Go language, so, to keep it simple, the support for MongoDB and MySQL are no longer available. The library
-
-Two entities were added to the project: Question and Answer. To do that, the files question.go and answer.go were created under the model folder.
+Question and Answer structures were added to the project. To do that, the files question.go and answer.go were created under the model folder.
 
 Question.go defines the structure where the questions will be saved:
 
 ~~~ go
 
 type Question struct {
-	ObjectID  bson.ObjectId `bson:"_id"`
-	ID        uint32        `db:"id" bson:"id,omitempty"`
-	Content   string        `db:"content" bson:"content"`
-	UserID    bson.ObjectId `bson:"user_id"`
-	UID       uint32        `db:"user_id" bson:"userid,omitempty"`
-	CreatedAt time.Time     `db:"created_at" bson:"created_at"`
-	UpdatedAt time.Time     `db:"updated_at" bson:"updated_at"`
-	Deleted   uint8         `db:"deleted" bson:"deleted"`
+	ObjectID  	bson.ObjectId 	`bson:"_id"`
+	ID        	uint32        	`db:"id" bson:"id,omitempty"`
+	Content   	string        	`db:"content" bson:"content"`
+	CorrectMsg 	string			`db:"correctmsg" bson:"correctmsg"`
+	WrongMsg 	string			`db:"wrongmsg" bson:"wrongmsg"`
+	UserID    	bson.ObjectId 	`bson:"user_id"`
+	UID       	uint32        	`db:"user_id" bson:"userid,omitempty"`
+	CreatedAt 	time.Time     	`db:"created_at" bson:"created_at"`
+	UpdatedAt 	time.Time     	`db:"updated_at" bson:"updated_at"`
+	Deleted   	uint8         	`db:"deleted" bson:"deleted"`
 }
 
 ~~~
 
-Answer.go defines the structure where the answers will be saved:
+Answer.go defines the structure where the answers will be saved (note that it has a link to the question structure)
 
 ~~~ go
 
@@ -86,6 +96,10 @@ type Answer struct {
 
 ~~~
 
+
+## Database
+
+This project is focused in the Go language, so, to keep it simple, the support for MongoDB and MySQL are no longer available. The external package used to handle the database is the BBolt [https://github.com/coreos/bbolt]. Bolt is a pure Go key/value store.
 
 ## Daqui pra frente é do GoWebAPP - remover
 

@@ -12,7 +12,14 @@
 			<label for="question_answer">Question Header</label>
 			<div><textarea rows="5" class="form-control" id="question_header" name="question_header" placeholder="Type your question header here..." value="" /></textarea></div>
 		</div>
-		
+		<div class="form-group">
+			<label for="question_correctmsg">Message for correctness</label>
+			<div><textarea rows="5" class="form-control" name="question_correctmsg" placeholder="Type the message to show when the user answer correctly..." value="" /></textarea></div>
+		</div>		
+		<div class="form-group">
+			<label for="question_wrongmsg">Message for incorrecteness</label>
+			<div><textarea rows="5" class="form-control" name="question_wrogmsg" placeholder="Type the message to show when the user answer incorrectly..." value="" /></textarea></div>
+		</div>		
 		<a title="Save" class="btn btn-success" role="submit" onclick="document.getElementById('form').submit();">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save
 		</a>

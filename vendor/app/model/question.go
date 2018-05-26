@@ -19,14 +19,16 @@ import (
 
 // Question table contains the information for each question
 type Question struct {
-	ObjectID  bson.ObjectId `bson:"_id"`
-	ID        uint32        `db:"id" bson:"id,omitempty"` // Don't use Id, use QuestionID() instead for consistency with MongoDB
-	Content   string        `db:"content" bson:"content"`
-	UserID    bson.ObjectId `bson:"user_id"`
-	UID       uint32        `db:"user_id" bson:"userid,omitempty"`
-	CreatedAt time.Time     `db:"created_at" bson:"created_at"`
-	UpdatedAt time.Time     `db:"updated_at" bson:"updated_at"`
-	Deleted   uint8         `db:"deleted" bson:"deleted"`
+	ObjectID   bson.ObjectId `bson:"_id"`
+	ID         uint32        `db:"id" bson:"id,omitempty"`
+	Content    string        `db:"content" bson:"content"`
+	CorrectMsg string        `db:"correctmsg" bson:"correctmsg"`
+	WrongMsg   string        `db:"wrongmsg" bson:"wrongmsg"`
+	UserID     bson.ObjectId `bson:"user_id"`
+	UID        uint32        `db:"user_id" bson:"userid,omitempty"`
+	CreatedAt  time.Time     `db:"created_at" bson:"created_at"`
+	UpdatedAt  time.Time     `db:"updated_at" bson:"updated_at"`
+	Deleted    uint8         `db:"deleted" bson:"deleted"`
 }
 
 // QuestionID returns the question id
@@ -128,7 +130,7 @@ func QuestionsByUserID(userID string) ([]Question, error) {
 }
 
 // QuestionCreate creates a question
-func QuestionCreate(content string, userID string) error {
+func QuestionCreate(content string, correctmsg string, wrongmsg string, userID string) error {
 	var err error
 
 	now := time.Now()
@@ -144,12 +146,14 @@ func QuestionCreate(content string, userID string) error {
 			c := session.DB(database.ReadConfig().MongoDB.Database).C("question")
 
 			question := &Question{
-				ObjectID:  bson.NewObjectId(),
-				Content:   content,
-				UserID:    bson.ObjectIdHex(userID),
-				CreatedAt: now,
-				UpdatedAt: now,
-				Deleted:   0,
+				ObjectID:   bson.NewObjectId(),
+				Content:    content,
+				CorrectMsg: correctmsg,
+				WrongMsg:   wrongmsg,
+				UserID:     bson.ObjectIdHex(userID),
+				CreatedAt:  now,
+				UpdatedAt:  now,
+				Deleted:    0,
 			}
 			err = c.Insert(question)
 		} else {
@@ -157,12 +161,14 @@ func QuestionCreate(content string, userID string) error {
 		}
 	case database.TypeBolt:
 		question := &Question{
-			ObjectID:  bson.NewObjectId(),
-			Content:   content,
-			UserID:    bson.ObjectIdHex(userID),
-			CreatedAt: now,
-			UpdatedAt: now,
-			Deleted:   0,
+			ObjectID:   bson.NewObjectId(),
+			Content:    content,
+			CorrectMsg: correctmsg,
+			WrongMsg:   wrongmsg,
+			UserID:     bson.ObjectIdHex(userID),
+			CreatedAt:  now,
+			UpdatedAt:  now,
+			Deleted:    0,
 		}
 
 		err = database.Update("question", userID+question.ObjectID.Hex(), &question)
@@ -174,7 +180,7 @@ func QuestionCreate(content string, userID string) error {
 }
 
 // QuestionUpdate updates a question
-func QuestionUpdate(content string, userID string, questionID string) error {
+func QuestionUpdate(content string, correctmsg string, wrongmsg string, userID string, questionID string) error {
 	var err error
 
 	now := time.Now()
@@ -188,6 +194,8 @@ func QuestionUpdate(content string, userID string, questionID string) error {
 			if question.UserID.Hex() == userID {
 				question.UpdatedAt = now
 				question.Content = content
+				question.CorrectMsg = correctmsg
+				question.WrongMsg = wrongmsg
 				err = database.Update("question", userID+question.ObjectID.Hex(), &question)
 			} else {
 				err = ErrUnauthorized

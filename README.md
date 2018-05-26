@@ -1,45 +1,24 @@
-# GoWebApp
+# GoQuiz
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/josephspurrier/gowebapp)](https://goreportcard.com/report/github.com/josephspurrier/gowebapp)
-[![GoDoc](https://godoc.org/github.com/josephspurrier/gowebapp?status.svg)](https://godoc.org/github.com/josephspurrier/gowebapp) 
+[![Go Report Card](https://goreportcard.com/badge/github.com/aldomonteiro/GoQuizz)](https://goreportcard.com/report/github.com/aldomonteiro/GoQuizz)
 
 Basic MVC Web Application in Go
 
-#### I recommend you use Blue Jay which is the latest version of this project: [https://github.com/blue-jay/blueprint](https://github.com/blue-jay/blueprint).
+I found a really simple MVC application written in Go, the GoWebApp [https://github.com/josephspurrier/gowebapp], forked and extended it to do a bit more.
 
-This project demonstrates how to structure and build a website using the Go language without a framework. There is a blog article you can read at [http://www.josephspurrier.com/go-web-app-example/](http://www.josephspurrier.com/go-web-app-example/). There is a full application I built with an earlier version of the project at [https://github.com/verifiedninja/webapp](https://github.com/verifiedninja/webapp). There is an API version of this project at [https://github.com/josephspurrier/gowebapi](https://github.com/josephspurrier/gowebapi).
+This project demonstrates how to structure and build a website using the Go language without a framework. There is a blog article you can read at [http://www.josephspurrier.com/go-web-app-example/](http://www.josephspurrier.com/go-web-app-example/).
 
 To download, run the following command:
 
 ~~~
-go get github.com/josephspurrier/gowebapp
+go get github.com/aldomonteiro/goquizz
 ~~~
-
-If you are on Go 1.5, you need to set GOVENDOREXPERIMENT to 1. If you are on Go 1.4 or earlier, the code will not work because it uses the vendor folder.
 
 ## Quick Start with Bolt
 
-The gowebapp.db file will be created once you start the application.
+The forked project GoWebApp was written to work with Bolt, MongoDB or MySQL. When I started to extend the GoWebApp to create a system that creates questions and answers to be used in a simple quizz, I kept these 3 database options alive. However, maintain this compatibility started to become harder. My intent was learn Go, so, I chose the simpler database option: Bolt.
 
-Build and run from the root directory. Open your web browser to: http://localhost. You should see the welcome page.
-
-Navigate to the login page, and then to the register page. Create a new user and you should be able to login. That's it.
-
-## Quick Start with MongoDB
-
-Start MongoDB.
-
-Open config/config.json and edit the Database section so the connection information matches your MongoDB instance. Also, change Type from Bolt to MongoDB.
-
-Build and run from the root directory. Open your web browser to: http://localhost. You should see the welcome page.
-
-Navigate to the login page, and then to the register page. Create a new user and you should be able to login. That's it.
-
-## Quick Start with MySQL
-
-Start MySQL and import config/mysql.sql to create the database and tables.
-
-Open config/config.json and edit the Database section so the connection information matches your MySQL instance. Also, change Type from Bolt to MySQL.
+The goquizz.db file will be created once you start the application.
 
 Build and run from the root directory. Open your web browser to: http://localhost. You should see the welcome page.
 

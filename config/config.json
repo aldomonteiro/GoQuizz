@@ -2,16 +2,16 @@
 	"Database": {
 		"Type": "Bolt",
 		"Bolt": {		
- 			"Path": "gowebapp.db"
+ 			"Path": "goquizz.db"
   		},
 		"MongoDB": {
 			"URL": "127.0.0.1",
-			"Database": "gowebapp"
+			"Database": "goquizz"
 		},
 		"MySQL": {
 			"Username": "root",
 			"Password": "",
-			"Name": "gowebapp",
+			"Name": "goquizz",
 			"Hostname": "127.0.0.1",
 			"Port": 3306,
 			"Parameter": "?parseTime=true"

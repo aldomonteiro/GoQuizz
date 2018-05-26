@@ -9,7 +9,7 @@ import (
 
 	"app/shared/database"
 
-	"github.com/boltdb/bolt"
+	bolt "github.com/coreos/bbolt"
 	"gopkg.in/mgo.v2/bson"
 )
 

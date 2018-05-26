@@ -89,10 +89,10 @@ func routes() *httprouter.Router {
 	r.GET("/questionslist", hr.Handler(alice.
 		New(acl.DisallowAnon).
 		ThenFunc(controller.QuestionsListReadGET)))
-	r.GET("/questionslist/createHeader", hr.Handler(alice.
+	r.GET("/questionslist/create", hr.Handler(alice.
 		New(acl.DisallowAnon).
 		ThenFunc(controller.QuestionsListCreateGET)))
-	r.POST("/questionslist/createHeader", hr.Handler(alice.
+	r.POST("/questionslist/create", hr.Handler(alice.
 		New(acl.DisallowAnon).
 		ThenFunc(controller.QuestionsListCreatePOST)))
 	r.GET("/questionslist/update/:id", hr.Handler(alice.

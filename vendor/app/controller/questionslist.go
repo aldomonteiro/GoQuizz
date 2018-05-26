@@ -42,7 +42,7 @@ func QuestionsListCreateGET(w http.ResponseWriter, r *http.Request) {
 
 	// Display the view
 	v := view.New(r)
-	v.Name = "questionslist/createHeader"
+	v.Name = "questionslist/create"
 	v.Vars["token"] = csrfbanana.Token(w, r, sess)
 	v.Render(w)
 }

@@ -1,4 +1,4 @@
-# GoQuiz
+# GoQuizz
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/aldomonteiro/GoQuizz)](https://goreportcard.com/report/github.com/aldomonteiro/GoQuizz)
 
@@ -43,12 +43,6 @@ by JavaScript in the static folder.
 
 ## Structure
 
-Recently, the folder structure changed. After looking at all the forks 
-and reusing my project in different places, I decided to move the Go code to the 
-**app** folder inside the **vendor** folder so the github path is not littered 
-throughout the many imports. I did not want to use relative paths so the vendor
-folder seemed like the best option.
-
 The project is organized into the following folders:
 
 ~~~
@@ -67,7 +61,7 @@ There are a few external packages:
 ~~~
 github.com/gorilla/context				- registry for global request variables
 github.com/gorilla/sessions				- cookie and filesystem sessions
-github.com/go-sql-driver/mysql 			- MySQL driver
+github.com/coreos/bbolt 				- Bolt database
 github.com/haisum/recaptcha				- Google reCAPTCHA support
 github.com/jmoiron/sqlx 				- MySQL general purpose extensions
 github.com/josephspurrier/csrfbanana 	- CSRF protection for gorilla sessions
@@ -80,17 +74,20 @@ golang.org/x/crypto/bcrypt 				- password hashing algorithm
 The templates are organized into folders under the **template** folder:
 
 ~~~
-about/about.tmpl       - quick info about the app
-index/anon.tmpl	       - public home page
-index/auth.tmpl	       - home page once you login
-login/login.tmpl	   - login page
-notepad/create.tmpl    - create note
-notepad/read.tmpl      - read a note
-notepad/update.tmpl    - update a note
-partial/footer.tmpl	   - footer
-partial/menu.tmpl	   - menu at the top of all the pages
-register/register.tmpl - register page
-base.tmpl		       - base template for all the pages
+about/about.tmpl       		- quick info about the app
+index/anon.tmpl	       		- public home page
+index/auth.tmpl	       		- home page once you login
+login/login.tmpl	   		- login page
+questionslist/create.tmpl	- create question header
+questionslist/read.tmpl   	- read a question
+questioslist/update.tmpl    - update a question
+answers/create.tmpl			- create answer
+answers/read.tmpl   		- read answers
+answers/update.tmpl    		- update an answer
+partial/footer.tmpl	   		- footer
+partial/menu.tmpl	   		- menu at the top of all the pages
+register/register.tmpl 		- register page
+base.tmpl		       		- base template for all the pages
 ~~~
 
 ## Templates

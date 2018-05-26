@@ -43,6 +43,52 @@ by JavaScript in the static folder.
 
 ## Structure
 
+The project structure is basically the same as its forked project GoWebApp [https://github.com/josephspurrier/gowebapp]. Visit the project page and read carefully the README to understand the structure, components, templates and model. 
+
+## Database
+
+This project is focused in the Go language, so, to keep it simple, the support for MongoDB and MySQL are no longer available. The library
+
+Two entities were added to the project: Question and Answer. To do that, the files question.go and answer.go were created under the model folder.
+
+Question.go defines the structure where the questions will be saved:
+
+~~~ go
+
+type Question struct {
+	ObjectID  bson.ObjectId `bson:"_id"`
+	ID        uint32        `db:"id" bson:"id,omitempty"`
+	Content   string        `db:"content" bson:"content"`
+	UserID    bson.ObjectId `bson:"user_id"`
+	UID       uint32        `db:"user_id" bson:"userid,omitempty"`
+	CreatedAt time.Time     `db:"created_at" bson:"created_at"`
+	UpdatedAt time.Time     `db:"updated_at" bson:"updated_at"`
+	Deleted   uint8         `db:"deleted" bson:"deleted"`
+}
+
+~~~
+
+Answer.go defines the structure where the answers will be saved:
+
+~~~ go
+
+type Answer struct {
+	ObjectID   bson.ObjectId `bson:"_id"`
+	ID         uint32        `db:"id" bson:"id,omitempty"` 
+	Content    string        `db:"content" bson:"content"`
+	QuestionID bson.ObjectId `bson:"question_id"`
+	QID        uint32        `db:"question_id" bson:"questionid,omitempty"`
+	IsCorrect  bool          `db:"iscorrect" bson:"iscorrect"`
+	CreatedAt  time.Time     `db:"created_at" bson:"created_at"`
+	UpdatedAt  time.Time     `db:"updated_at" bson:"updated_at"`
+	Deleted    uint8         `db:"deleted" bson:"deleted"`
+}
+
+~~~
+
+
+## Daqui pra frente é do GoWebAPP - remover
+
 The project is organized into the following folders:
 
 ~~~
@@ -74,20 +120,20 @@ golang.org/x/crypto/bcrypt 				- password hashing algorithm
 The templates are organized into folders under the **template** folder:
 
 ~~~
-about/about.tmpl       		- quick info about the app
-index/anon.tmpl	       		- public home page
-index/auth.tmpl	       		- home page once you login
-login/login.tmpl	   		- login page
-questionslist/create.tmpl	- create question header
-questionslist/read.tmpl   	- read a question
-questioslist/update.tmpl    - update a question
-answers/create.tmpl			- create answer
-answers/read.tmpl   		- read answers
-answers/update.tmpl    		- update an answer
-partial/footer.tmpl	   		- footer
-partial/menu.tmpl	   		- menu at the top of all the pages
-register/register.tmpl 		- register page
-base.tmpl		       		- base template for all the pages
+about/about.tmpl			- quick info about the app
+index/anon.tmpl				- public home page
+index/auth.tmpl				- home page once you login
+login/login.tmpl			- login page
+questionslist/create.tmpl	- create a question header
+questionslist/read.tmpl		- read a question
+questioslist/update.tmpl	- update a question
+answers/create.tmpl			- create an answer
+answers/read.tmpl			- read answers
+answers/update.tmpl			- update an answer
+partial/footer.tmpl			- footer
+partial/menu.tmpl			- menu at the top of all the pages
+register/register.tmpl		- register page
+base.tmpl					- base template for all the pages
 ~~~
 
 ## Templates

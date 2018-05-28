@@ -1,0 +1,47 @@
+{{define "title"}}SlickQuiz{{end}}
+{{define "head"}}
+        <link href="slickquiz/css/reset.css" media="screen" rel="stylesheet" type="text/css">
+        <link href="slickquiz/css/slickQuiz.css" media="screen" rel="stylesheet" type="text/css">
+        <link href="slickquiz/css/master.css" media="screen" rel="stylesheet" type="text/css">
+{{end}}
+{{define "content"}}
+<div class="container" id="slickQuiz">
+	<div class="page-header">
+		<h1>{{template "title" .}}</h1>
+	</div>
+        <h1 class="quizName"><!-- where the quiz name goes --></h1>
+
+        <div class="quizArea">
+            <div class="quizHeader">
+                <!-- where the quiz main copy goes -->
+
+                <a class="button startQuiz" href="#">Get Started!</a>
+            </div>
+
+            <!-- where the quiz gets built -->
+        </div>
+
+        <div class="quizResults">
+            <h3 class="quizScore">You Scored: <span><!-- where the quiz score goes --></span></h3>
+
+            <h3 class="quizLevel"><strong>Ranking:</strong> <span><!-- where the quiz ranking level goes --></span></h3>
+
+            <div class="quizResultsCopy">
+                <!-- where the quiz result copy goes -->
+            </div>
+        </div>
+
+	{{template "footer" .}}
+</div>
+{{end}}
+{{define "foot"}}
+        <script src="slickquiz/js/jquery.js"></script>
+        <script>
+            var stringJson = {{.jsonquiz}};
+            var quizJSON = JSON.parse(stringJson);
+
+        </script>
+        <!-- <script src="slickquiz/js/slickQuiz-config.js"></script>        -->
+        <script src="slickquiz/js/slickQuiz.js"></script>
+        <script src="slickquiz/js/master.js"></script>
+{{end}}

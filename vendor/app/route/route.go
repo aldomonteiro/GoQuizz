@@ -56,6 +56,16 @@ func routes() *httprouter.Router {
 		New().
 		ThenFunc(controller.Static)))
 
+	// Serve static files, no directory browsing
+	r.GET("/slickquiz/*filepath", hr.Handler(alice.
+		New().
+		ThenFunc(controller.Static)))
+
+	// Frontend
+	r.GET("/frontend", hr.Handler(alice.
+		New().
+		ThenFunc(controller.FrontendGET)))
+
 	// Home page
 	r.GET("/", hr.Handler(alice.
 		New().

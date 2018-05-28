@@ -129,6 +129,43 @@ func QuestionsByUserID(userID string) ([]Question, error) {
 	return result, standardizeError(err)
 }
 
+// QuestionsList gets all questions
+func QuestionsList() ([]Question, error) {
+	var err error
+
+	var result []Question
+
+	switch database.ReadConfig().Type {
+	case database.TypeBolt:
+		// View retrieves a record set in Bolt
+		err = database.BoltDB.View(func(tx *bolt.Tx) error {
+			// Get the bucket
+			b := tx.Bucket([]byte("question"))
+			if b == nil {
+				return bolt.ErrBucketNotFound
+			}
+
+			b.ForEach(func(k, v []byte) error {
+				var single Question
+
+				// Decode the record
+				err := json.Unmarshal(v, &single)
+				if err != nil {
+					log.Println(err)
+				} else {
+					result = append(result, single)
+				}
+				return nil
+			})
+			return nil
+		})
+	default:
+		err = ErrCode
+	}
+
+	return result, standardizeError(err)
+}
+
 // QuestionCreate creates a question
 func QuestionCreate(content string, correctmsg string, wrongmsg string, userID string) error {
 	var err error

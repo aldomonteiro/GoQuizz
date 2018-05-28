@@ -127,20 +127,20 @@ Authenticated Home:
 Create Questions:
 
 ![Image of Question Creation]
-(https://user-images.githubusercontent.com/26613925/40624812-1d1a49f8-6285-11e8-9bad-59f63e3fa3f8.png)
+(https://user-images.githubusercontent.com/26613925/40624812-1d1a49f8-6285-11e8-9bad-59f63e3fa3f8.PNG)
 
 Show Questions:
 
-![Image of Questions List](https://user-images.githubusercontent.com/26613925/40624816-26462fd8-6285-11e8-9762-5a29263e01f7.png)
+![Image of Questions List](https://user-images.githubusercontent.com/26613925/40624816-26462fd8-6285-11e8-9762-5a29263e01f7.PNG)
 
 Show Answers:
 
-![Image of Answers List]https://user-images.githubusercontent.com/26613925/40624825-2c528138-6285-11e8-94c8-c61bf4ecb42c.png)
+![Image of Answers List]https://user-images.githubusercontent.com/26613925/40624825-2c528138-6285-11e8-94c8-c61bf4ecb42c.PNG)
 
 Quiz in action:
 
 ![Image of Quiz in action]
-(https://user-images.githubusercontent.com/26613925/40624831-31731fc4-6285-11e8-955c-e67ed275296b.png)
+(https://user-images.githubusercontent.com/26613925/40624831-31731fc4-6285-11e8-955c-e67ed275296b.PNG)
 
 
 ## Feedback

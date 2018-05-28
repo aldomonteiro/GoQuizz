@@ -154,6 +154,7 @@ func AnswersUpdateGET(w http.ResponseWriter, r *http.Request) {
 	v.Name = "answers/update"
 	v.Vars["token"] = csrfbanana.Token(w, r, sess)
 	v.Vars["answer_content"] = answer.Content
+	v.Vars["question_id"] = questionID
 	if answer.IsCorrect {
 		v.Vars["answer_correct"] = "checked"
 	} else {

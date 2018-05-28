@@ -2,19 +2,21 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/aldomonteiro/GoQuizz)](https://goreportcard.com/report/github.com/aldomonteiro/GoQuizz)
 
-Basic MVC Web Application in Go
+I am proud to bring you GoQuizz: an online quiz built in Go. Forked from the GoWebApp [https://github.com/josephspurrier/gowebapp] and integrated with Slickquiz[https://github.com/jewlofthelotus/SlickQuiz], it is a complete system that allows the user to create questions for a quiz and answer them.
 
-This project is an online quizz, where it is possible to create questions and assigning answers to them, marking the answers as correct or not.
+## Why GoQuizz? 
 
-## Current state 
-
-Only the system backend is developed, i.e., it is only possible to create questions and answers. The quizz, where users can answer the questions and get a score was not developed. I want to go further and develop/integrate the quizz, something like the angularjs-Quizzler project [https://github.com/ThomasBurleson/angularjs-Quizzler]
+I would like to learn Go, so, I found a really simple MVC application written in Go, the GoWebApp [https://github.com/josephspurrier/gowebapp], forked and extended it to do a bit more. The idea was build a system that could be used in real life applications and an online quiz fit this intent.
 
 ## GoWebApp
 
-I found a really simple MVC application written in Go, the GoWebApp [https://github.com/josephspurrier/gowebapp], forked and extended it to do a bit more.
+GoWebApp demonstrates how to structure and build a website using the Go language without a framework. There is a blog article you can read at [http://www.josephspurrier.com/go-web-app-example/](http://www.josephspurrier.com/go-web-app-example/).
 
-This project demonstrates how to structure and build a website using the Go language without a framework. There is a blog article you can read at [http://www.josephspurrier.com/go-web-app-example/](http://www.josephspurrier.com/go-web-app-example/).
+## Current state
+
+You can create a new user and login in the system. There, it is possible to create questions and answers for them. 
+
+All questions created can be anwswered using the Frontend option in the menu. The Frontend is an almost untouched version of the SlickQuiz project [https://github.com/jewlofthelotus/SlickQuiz], written in JavaScript. This beautiful project came with an option to integrate with CMS system, where I just needed to format the created questions in a specfic JSon format.
 
 ## Get started
 
@@ -96,372 +98,9 @@ type Answer struct {
 
 ~~~
 
-
 ## Database
 
 This project is focused in the Go language, so, to keep it simple, the support for MongoDB and MySQL are no longer available. The external package used to handle the database is the BBolt [https://github.com/coreos/bbolt]. Bolt is a pure Go key/value store.
-
-## Daqui pra frente é do GoWebAPP - remover
-
-The project is organized into the following folders:
-
-~~~
-config		- application settings and database schema
-static		- location of statically served files like CSS and JS
-template	- HTML templates
-
-vendor/app/controller	- page logic organized by HTTP methods (GET, POST)
-vendor/app/shared		- packages for templates, MySQL, cryptography, sessions, and json
-vendor/app/model		- database queries
-vendor/app/route		- route information and middleware
-~~~
-
-There are a few external packages:
-
-~~~
-github.com/gorilla/context				- registry for global request variables
-github.com/gorilla/sessions				- cookie and filesystem sessions
-github.com/coreos/bbolt 				- Bolt database
-github.com/haisum/recaptcha				- Google reCAPTCHA support
-github.com/jmoiron/sqlx 				- MySQL general purpose extensions
-github.com/josephspurrier/csrfbanana 	- CSRF protection for gorilla sessions
-github.com/julienschmidt/httprouter 	- high performance HTTP request router
-github.com/justinas/alice				- middleware chaining
-github.com/mattn/go-sqlite3				- SQLite driver
-golang.org/x/crypto/bcrypt 				- password hashing algorithm
-~~~
-
-The templates are organized into folders under the **template** folder:
-
-~~~
-about/about.tmpl			- quick info about the app
-index/anon.tmpl				- public home page
-index/auth.tmpl				- home page once you login
-login/login.tmpl			- login page
-questionslist/create.tmpl	- create a question header
-questionslist/read.tmpl		- read a question
-questioslist/update.tmpl	- update a question
-answers/create.tmpl			- create an answer
-answers/read.tmpl			- read answers
-answers/update.tmpl			- update an answer
-partial/footer.tmpl			- footer
-partial/menu.tmpl			- menu at the top of all the pages
-register/register.tmpl		- register page
-base.tmpl					- base template for all the pages
-~~~
-
-## Templates
-
-There are a few template funcs that are available to make working with the templates 
-and static files easier:
-
-~~~ html
-<!-- CSS files with timestamps -->
-{{CSS "static/css/normalize3.0.0.min.css"}}
-parses to
-<link rel="stylesheet" type="text/css" href="/static/css/normalize3.0.0.min.css?1435528339" />
-
-<!-- JS files with timestamps -->
-{{JS "static/js/jquery1.11.0.min.js"}}
-parses to
-<script type="text/javascript" src="/static/js/jquery1.11.0.min.js?1435528404"></script>
-
-<!-- Hyperlinks -->
-{{LINK "register" "Create a new account."}}
-parses to
-<a href="/register">Create a new account.</a>
-
-<!-- Output an unescaped variable (not a safe idea, but I find it useful when troubleshooting) -->
-{{.SomeVariable | NOESCAPE}}
-
-<!-- Time format -->
-{{.SomeTime | PRETTYTIME}}
-parses to format
-3:04 PM 01/02/2006
-~~~
-
-There are a few variables you can use in templates as well:
-
-~~~ html
-<!-- Use AuthLevel=auth to determine if a user is logged in (if session.Values["id"] != nil) -->
-{{if eq .AuthLevel "auth"}}
-You are logged in.
-{{else}}
-You are not logged in.
-{{end}}
-
-<!-- Use BaseURI to print the base URL of the web app -->
-<li><a href="{{.BaseURI}}about">About</a></li>
-
-<!-- Use token to output the CSRF token in a form -->
-<input type="hidden" name="token" value="{{.token}}">
-~~~
-
-It's also easy to add template-specific code before the closing </head> and </body> tags:
-
-~~~ html
-<!-- Code is added before the closing </head> tag -->
-{{define "head"}}<meta name="robots" content="noindex">{{end}}
-
-...
-
-<!-- Code is added before the closing </body> tag -->
-{{define "foot"}}{{JS "//www.google.com/recaptcha/api.js"}}{{end}}
-~~~
-
-## JavaScript
-
-You can trigger a flash notification using JavaScript.
-
-~~~ javascript
-flashError("You must type in a username.");
-
-flashSuccess("Record created!");
-
-flashNotice("There seems to be a piece missing.");
-
-flashWarning("Something does not seem right...");
-~~~
-
-## Controllers
-
-The controller files all share the same package name. This cuts down on the 
-number of packages when you are mapping the routes. It also forces you to use
-a good naming convention for each of the funcs so you know where each of the 
-funcs are located and what type of HTTP request they each are mapped to.
-
-### These are a few things you can do with controllers.
-
-Access a gorilla session:
-
-~~~ go
-// Get the current session
-sess := session.Instance(r)
-...
-// Close the session after you are finished making changes
-sess.Save(r, w)
-~~~
-
-Trigger 1 of 4 different types of flash messages on the next page load (no other code needed):
-
-~~~ go
-sess.AddFlash(view.Flash{"Sorry, no brute force :-)", view.FlashNotice})
-sess.Save(r, w) // Ensure you save the session after making a change to it
-~~~
-
-Validate form fields are not empty:
-
-~~~ go
-// Ensure a user submitted all the required form fields
-if validate, missingField := view.Validate(r, []string{"email", "password"}); !validate {
-	sess.AddFlash(view.Flash{"Field missing: " + missingField, view.FlashError})
-	sess.Save(r, w)
-	LoginGET(w, r)
-	return
-}
-~~~
-
-Render a template:
-
-~~~ go
-// Create a new view
-v := view.New(r)
-
-// Set the template name
-v.Name = "login/login"
-
-// Assign a variable that is accessible in the form
-v.Vars["token"] = csrfbanana.Token(w, r, sess)
-
-// Refill any form fields from a POST operation
-view.Repopulate([]string{"email"}, r.Form, v.Vars)
-
-// Render the template
-v.Render(w)
-~~~
-
-Return the flash messages during an Ajax request:
-
-~~~ go
-// Get session
-sess := session.Instance(r)
-
-// Set the flash message
-sess.AddFlash(view.Flash{"An error occurred on the server. Please try again later.", view.FlashError})
-sess.Save(r, w)
-
-// Display the flash messages as JSON
-v := view.New(r)
-v.SendFlashes(w)
-~~~
-
-Handle the database query:
-
-~~~ go
-// Get database result
-result, err := model.UserByEmail(email)
-
-if err == sql.ErrNoRows {
-	// User does not exist
-} else if err != nil {
-	// Display error message
-} else if passhash.MatchString(result.Password, password) {
-	// Password matches!	
-} else {
-	// Password does not match
-}
-~~~
-
-Send an email:
-
-~~~ go
-// Email a user
-err := email.SendEmail(email.ReadConfig().From, "This is the subject", "This is the body!")
-if err != nil {
-	log.Println(err)
-	sess.AddFlash(view.Flash{"An error occurred on the server. Please try again later.", view.FlashError})
-	sess.Save(r, w)
-	return
-}
-~~~
-
-Validate a form if the Google reCAPTCHA is enabled in the config:
-
-~~~ go
-// Validate with Google reCAPTCHA
-if !recaptcha.Verified(r) {
-	sess.AddFlash(view.Flash{"reCAPTCHA invalid!", view.FlashError})
-	sess.Save(r, w)
-	RegisterGET(w, r)
-	return
-}
-~~~
-
-## Database
-
-It's a good idea to abstract the database layer out so if you need to make 
-changes, you don't have to look through business logic to find the queries. All
-the queries are stored in the models folder.
-
-This project supports BoltDB, MongoDB, and MySQL. All the queries are stored in
-the same files so you can easily change the database without modifying anything
-but the config file.
-
-The user.go and note.go files are at the root of the model directory and are a
-compliation of all the queries for each database type. There are a few hacks in
-the models to get the structs to work with all the supported databases.
-
-Connect to the database (only once needed in your application):
-
-~~~ go
-// Connect to database
-database.Connect(config.Database)
-~~~
-
-Read from the database:
-
-~~~ go
-result := User{}
-err := database.DB.Get(&result, "SELECT id, password, status_id, first_name FROM user WHERE email = ? LIMIT 1", email)
-return result, err
-~~~
-
-Write to the database:
-
-~~~ go
-_, err := database.DB.Exec("INSERT INTO user (first_name, last_name, email, password) VALUES (?,?,?,?)", firstName, lastName, email, password)
-return err
-~~~
-
-## Middleware
-
-There are a few pieces of middleware included. The package called csrfbanana 
-protects against Cross-Site Request Forgery attacks and prevents double submits. 
-The package httprouterwrapper provides helper functions to make funcs compatible 
-with httprouter. The package logrequest will log every request made against the 
-website to the console. The package pprofhandler enables pprof so it will work 
-with httprouter. In route.go, all the individual routes use alice to make 
-chaining very easy.
-
-## Configuration
-
-To make the web app a little more flexible, you can make changes to different 
-components in one place through the config.json file. If you want to add any 
-of your own settings, you can add them to config.json and update the structs
-in gowebapp.go and the individual files so you can reference them in your code. 
-This is config.json:
-
-~~~ json
-{
-	"Database": {
-		"Type": "Bolt",
-		"Bolt": {		
- 			"Path": "gowebapp.db"
-  		},
-		"MongoDB": {
-			"URL": "127.0.0.1",
-			"Database": "gowebapp"
-		},
-		"MySQL": {
-			"Username": "root",
-			"Password": "",
-			"Name": "gowebapp",
-			"Hostname": "127.0.0.1",
-			"Port": 3306,
-			"Parameter": "?parseTime=true"
-		}
-	},
-	"Email": {
-		"Username": "",
-		"Password": "",
-		"Hostname": "",
-		"Port": 25,
-		"From": ""
-	},
-	"Recaptcha": {
-		"Enabled": false,
-		"Secret": "",
-		"SiteKey": ""
-	},
-	"Server": {
-		"Hostname": "",
-		"UseHTTP": true,
-		"UseHTTPS": false,
-		"HTTPPort": 80,
-		"HTTPSPort": 443,
-		"CertFile": "tls/server.crt",
-		"KeyFile": "tls/server.key"
-	},
-	"Session": {
-		"SecretKey": "@r4B?EThaSEh_drudR7P_hub=s#s2Pah",
-		"Name": "gosess",
-		"Options": {
-			"Path": "/",
-			"Domain": "",
-			"MaxAge": 28800,
-			"Secure": false,
-			"HttpOnly": true
-		}
-	},
-	"Template": {
-		"Root": "base",
-		"Children": [
-			"partial/menu",
-			"partial/footer"
-		]
-	},
-	"View": {
-		"BaseURI": "/",
-		"Extension": "tmpl",
-		"Folder": "template",
-		"Name": "blank",
-		"Caching": true
-	}
-}
-~~~
-
-To enable HTTPS, set UseHTTPS to true, create a folder called tls in the root, 
-and then place the certificate and key files in that folder.
 
 ## Screenshots
 
@@ -485,17 +124,24 @@ Authenticated Home:
 
 ![Image of Auth Home](https://cloud.githubusercontent.com/assets/2394539/14809208/75f340d2-0b59-11e6-8d2a-cd26ee872281.PNG)
 
-View Notes:
+Create Questions:
 
-![Image of Notepad View](https://cloud.githubusercontent.com/assets/2394539/14809205/75f08432-0b59-11e6-8737-84ee796bd82e.PNG)
+![Image of Question Creation]
+(https://user-images.githubusercontent.com/26613925/40624812-1d1a49f8-6285-11e8-9bad-59f63e3fa3f8.png)
 
-Add Note:
+Show Questions:
 
-![Image of Notepad Add](https://cloud.githubusercontent.com/assets/2394539/14809207/75f338f8-0b59-11e6-9719-61355957996c.PNG)
+![Image of Questions List](https://user-images.githubusercontent.com/26613925/40624816-26462fd8-6285-11e8-9762-5a29263e01f7.png)
 
-Edit Note:
+Show Answers:
 
-![Image of Notepad Edit](https://cloud.githubusercontent.com/assets/2394539/14809206/75f33970-0b59-11e6-8acf-b3d533477aac.PNG)
+![Image of Answers List]https://user-images.githubusercontent.com/26613925/40624825-2c528138-6285-11e8-94c8-c61bf4ecb42c.png)
+
+Quiz in action:
+
+![Image of Quiz in action]
+(https://user-images.githubusercontent.com/26613925/40624831-31731fc4-6285-11e8-955c-e67ed275296b.png)
+
 
 ## Feedback
 

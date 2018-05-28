@@ -131,7 +131,7 @@ Create Questions:
 
 Show Questions:
 
-![Image of Questions List](https://user-images.githubusercontent.com/26613925/40624816-26462fd8-6285-11e8-9762-5a29263e01f7.PNG)
+![goquizz - read question](https://user-images.githubusercontent.com/26613925/40624816-26462fd8-6285-11e8-9762-5a29263e01f7.png)
 
 Show Answers:
 

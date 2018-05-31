@@ -1,15 +1,11 @@
 package model
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"log"
 	"time"
 
 	"GoQuizz/app/shared/database"
 
-	bolt "github.com/coreos/bbolt"
+	"github.com/asdine/storm/q"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -19,16 +15,15 @@ import (
 
 // Question table contains the information for each question
 type Question struct {
-	ObjectID   bson.ObjectId `bson:"_id"`
-	ID         uint32        `db:"id" bson:"id,omitempty"`
-	Content    string        `db:"content" bson:"content"`
-	CorrectMsg string        `db:"correctmsg" bson:"correctmsg"`
-	WrongMsg   string        `db:"wrongmsg" bson:"wrongmsg"`
-	UserID     bson.ObjectId `bson:"user_id"`
-	UID        uint32        `db:"user_id" bson:"userid,omitempty"`
-	CreatedAt  time.Time     `db:"created_at" bson:"created_at"`
-	UpdatedAt  time.Time     `db:"updated_at" bson:"updated_at"`
-	Deleted    uint8         `db:"deleted" bson:"deleted"`
+	ObjectID   bson.ObjectId `storm:"id"`
+	Content    string
+	CorrectMsg string
+	WrongMsg   string
+	UserID     bson.ObjectId
+	UID        uint32
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	Deleted    uint8
 }
 
 // QuestionID returns the question id
@@ -37,7 +32,6 @@ func (u *Question) QuestionID() string {
 
 	switch database.ReadConfig().Type {
 	case database.TypeMySQL:
-		r = fmt.Sprintf("%v", u.ID)
 	case database.TypeMongoDB:
 		r = u.ObjectID.Hex()
 	case database.TypeBolt:
@@ -54,7 +48,7 @@ func QuestionByID(userID string, questionID string) (Question, error) {
 
 	switch database.ReadConfig().Type {
 	case database.TypeBolt:
-		err = database.View("question", userID+questionID, &result)
+		err = database.BoltDB.Select(q.And(q.Eq("ObjectID", bson.ObjectIdHex(questionID)), q.Eq("UserID", bson.ObjectIdHex(userID)))).Find(&result)
 		if err != nil {
 			result = Question{}
 			err = ErrNoResult
@@ -96,32 +90,7 @@ func QuestionsByUserID(userID string) ([]Question, error) {
 		}
 	case database.TypeBolt:
 		// View retrieves a record set in Bolt
-		err = database.BoltDB.View(func(tx *bolt.Tx) error {
-			// Get the bucket
-			b := tx.Bucket([]byte("question"))
-			if b == nil {
-				return bolt.ErrBucketNotFound
-			}
-
-			// Get the iterator
-			c := b.Cursor()
-
-			prefix := []byte(userID)
-			for k, v := c.Seek(prefix); bytes.HasPrefix(k, prefix); k, v = c.Next() {
-				var single Question
-
-				// Decode the record
-				err := json.Unmarshal(v, &single)
-				if err != nil {
-					log.Println(err)
-					continue
-				}
-
-				result = append(result, single)
-			}
-
-			return nil
-		})
+		err = database.BoltDB.Find("UserID", userID, &result)
 	default:
 		err = ErrCode
 	}
@@ -138,27 +107,7 @@ func QuestionsList() ([]Question, error) {
 	switch database.ReadConfig().Type {
 	case database.TypeBolt:
 		// View retrieves a record set in Bolt
-		err = database.BoltDB.View(func(tx *bolt.Tx) error {
-			// Get the bucket
-			b := tx.Bucket([]byte("question"))
-			if b == nil {
-				return bolt.ErrBucketNotFound
-			}
-
-			b.ForEach(func(k, v []byte) error {
-				var single Question
-
-				// Decode the record
-				err := json.Unmarshal(v, &single)
-				if err != nil {
-					log.Println(err)
-				} else {
-					result = append(result, single)
-				}
-				return nil
-			})
-			return nil
-		})
+		err = database.BoltDB.All(&result)
 	default:
 		err = ErrCode
 	}
@@ -208,7 +157,7 @@ func QuestionCreate(content string, correctmsg string, wrongmsg string, userID s
 			Deleted:    0,
 		}
 
-		err = database.Update("question", userID+question.ObjectID.Hex(), &question)
+		err = database.BoltDB.Save(&question)
 	default:
 		err = ErrCode
 	}
@@ -233,7 +182,7 @@ func QuestionUpdate(content string, correctmsg string, wrongmsg string, userID s
 				question.Content = content
 				question.CorrectMsg = correctmsg
 				question.WrongMsg = wrongmsg
-				err = database.Update("question", userID+question.ObjectID.Hex(), &question)
+				err = database.BoltDB.Save(&question)
 			} else {
 				err = ErrUnauthorized
 			}
@@ -278,7 +227,7 @@ func QuestionDelete(userID string, questionID string) error {
 		if err == nil {
 			// Confirm the owner is attempting to modify the question
 			if question.UserID.Hex() == userID {
-				err = database.Delete("question", userID+question.ObjectID.Hex())
+				err = database.BoltDB.DeleteStruct(&question)
 			} else {
 				err = ErrUnauthorized
 			}
